@@ -1,37 +1,36 @@
-const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const dotenv = require("dotenv");
+const passport = require("passport"); // library for managing user authentication, such as session
+const GoogleStrategy = require("passport-google-oauth20").Strategy; // this is for the registration and login using google
 
-dotenv.config();
-
-passport.use(
-  new GoogleStrategy(
+passport.use( // use passport library
+  new GoogleStrategy( // this part set up the google
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
       callbackURL: "http://localhost:5000/auth/google/callback",
     },
-    function (accessToken, refreshToken, profile, done) {
+    function (accessToken, refreshToken, profile, done) { // this is for like an authentication check for jwt to get the values needed
       const user = {
         id: profile.id,
         name: profile.displayName,
         email: profile.emails[0].value,
       };
 
-      // Store user information in session
-      return done(null, user);
+      return done(null, user); // returns the user (object), the reutnr means done(no error, object of user)
     }
   )
 );
 
-// Serialize the user into the session
+// passport.serializeUser is used for session-based authentication, 
+// where user data is stored on the server, while JWT stores authentication data in the client (like localStorage or cookies) 
+// for stateless authentication.
 passport.serializeUser(function (user, done) {
-  done(null, user.id); // Store only the user's ID in the session
+  done(null, user.id);1
 });
 
-// Deserialize the user from the session
+
+// passport.deserializeUser retrieves the user's ID from the session to compare  such as  URL parameters and check if the user can access certain pages or actions. 
 passport.deserializeUser(function (id, done) {
-  done(null, { id }); // Retrieve the user from the session
+  done(null, { id }); 
 });
 
 module.exports = passport;

@@ -7,19 +7,16 @@ const { getInitial, handelGoogleCallback } = require("../controller/authenticati
 route.get("/index", getInitial)
 
 // Initiate Google OAuth
+// the two paremeters let us set what to use (services) such as google and the scope let us what to access or get 
+// such as the profile and email of the user
 route.get("/auth/google", passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 // Google OAuth callback handler
+// if success use the handelGoogleCallback actions if not redirect to home
 route.get("/auth/google/callback", passport.authenticate('google', { failureRedirect: '/' }), handelGoogleCallback);
 
-// Add a protected route
-route.get("/profile", (req, res) => {
-  if (req.isAuthenticated()) {
-    return res.json({ success: "User is authenticated", user: req.user });
-  } else {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-});
+
+
 
 
 module.exports = route
