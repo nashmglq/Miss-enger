@@ -17,6 +17,6 @@ route.get("/auth/google/callback", passport.authenticate('google', { failureRedi
 
 
 
-// happy new year
+// happy new year, developing logging in
 
 module.exports = route
