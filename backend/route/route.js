@@ -18,5 +18,6 @@ route.get("/auth/google/callback", passport.authenticate('google', { failureRedi
 
 
 // happy new year, developing logging in
+// install scoketio
 
 module.exports = route
